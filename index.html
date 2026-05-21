@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joonas Järvenpää — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F4F5F6;
+    --bg-alt: #EAEBEC;
+    --ink: #1A1B1E;
+    --ink-muted: #6B7280;
+    --rust: #2E6DA4;
+    --rust-pale: #DBEAFE;
+    --rust-mid: #3B82C4;
+    --forest: #2A6049;
+    --forest-pale: #D1FAE5;
+    --stone: #9CA3AF;
+    --border: rgba(0,0,0,0.1);
+    --serif: 'Playfair Display', Georgia, serif;
+    --mono: 'Inter', system-ui, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--mono); background: var(--bg); color: var(--ink); font-size: 13.5px; line-height: 1.6; min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    padding: 0 3rem; display: flex; justify-content: space-between; align-items: center; height: 56px;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 300; color: var(--ink); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--ink-muted); text-decoration: none; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links .cta { color: var(--rust); }
+
+  /* HERO */
+  #hero {
+    min-height: 90vh; display: flex; flex-direction: column; justify-content: center;
+    max-width: 1100px; margin: 0 auto; padding: 6rem 3rem;
+  }
+  .hero-inner { display: grid; grid-template-columns: 1fr auto; gap: 4rem; align-items: center; }
+  .hero-photo-placeholder {
+    width: 260px; height: 340px; background: var(--bg-alt);
+    border: 1px solid var(--border); flex-shrink: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; color: var(--stone); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .hero-photo-placeholder svg { opacity: 0.35; }
+  .hero-photo-placeholder img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: 1.5rem; }
+  .hero-name { font-family: var(--serif); font-size: clamp(56px, 9vw, 108px); font-weight: 300; line-height: 0.9; letter-spacing: -0.02em; margin-bottom: 2rem; }
+  .hero-name em { font-style: italic; color: var(--rust-mid); }
+  .hero-tagline { font-family: var(--serif); font-size: clamp(16px, 2vw, 21px); font-weight: 300; font-style: italic; color: var(--ink-muted); max-width: 500px; line-height: 1.55; margin-bottom: 2.5rem; }
+
+  .hero-badges { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 3rem; }
+  .badge { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 12px; border: 1px solid var(--border); }
+  .badge.rust { background: var(--rust-pale); border-color: var(--rust); color: var(--rust); }
+  .badge.forest { background: var(--forest-pale); border-color: var(--forest); color: var(--forest); }
+  .badge.stone { background: var(--bg-alt); border-color: var(--stone); color: var(--stone); }
+
+  .hero-scroll { display: flex; align-items: center; gap: 1rem; color: var(--ink-muted); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .scroll-line { width: 48px; height: 1px; background: var(--rust); }
+
+  .ruled-divider { height: 1px; background: var(--border); max-width: 1100px; margin: 0 auto; }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+  .section-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rust); margin-bottom: 0.5rem; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .about-heading { font-family: var(--serif); font-size: clamp(36px, 5vw, 58px); font-weight: 300; line-height: 1.05; margin-bottom: 2rem; }
+  .about-heading em { font-style: italic; color: var(--rust-mid); }
+  .about-text { color: var(--ink-muted); line-height: 1.9; margin-bottom: 1.5rem; }
+
+  .contact-strip { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 10px; }
+  .contact-chip {
+    display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+    border: 1px solid var(--border); border-radius: 999px;
+    font-size: 11px; letter-spacing: 0.06em; color: var(--ink-muted); text-decoration: none; transition: all 0.2s;
+  }
+  .contact-chip:hover { border-color: var(--rust); color: var(--rust); background: var(--rust-pale); }
+
+  .about-right { padding-top: 2rem; }
+  .skill-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+  .skill-name { font-family: var(--serif); font-size: 17px; font-weight: 400; }
+  .skill-tag { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; }
+  .skill-tag.eng { background: var(--forest-pale); color: var(--forest); border: 1px solid var(--forest); }
+  .skill-tag.creative { background: var(--rust-pale); color: var(--rust); border: 1px solid var(--rust); }
+  .skill-tag.tool { background: var(--bg-alt); color: var(--stone); border: 1px solid var(--stone); }
+
+  .education-block {
+    margin-top: 2.5rem; padding: 1.25rem; background: var(--bg-alt);
+    border-left: 3px solid var(--forest); border-radius: 0;
+  }
+  .edu-degree { font-family: var(--serif); font-size: 19px; font-weight: 300; margin-bottom: 4px; }
+  .edu-meta { font-size: 11px; letter-spacing: 0.08em; color: var(--forest); text-transform: uppercase; }
+
+  /* PROJECTS */
+  .projects-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .projects-heading { font-family: var(--serif); font-size: clamp(36px, 5vw, 58px); font-weight: 300; line-height: 1.05; }
+  .projects-heading em { font-style: italic; color: var(--rust-mid); }
+  .project-count { font-size: 11px; letter-spacing: 0.12em; color: var(--ink-muted); text-transform: uppercase; }
+
+  .projects-list { display: flex; flex-direction: column; }
+  .project-item { display: grid; grid-template-columns: 80px 1fr auto; gap: 2rem; align-items: start; padding: 2rem 0; border-bottom: 1px solid var(--border); cursor: default; }
+  .project-item:hover .project-title { color: var(--rust); }
+  .project-num { font-size: 11px; letter-spacing: 0.1em; color: var(--ink-muted); padding-top: 3px; }
+  .project-title { font-family: var(--serif); font-size: 26px; font-weight: 300; margin-bottom: 0.4rem; transition: color 0.2s; }
+  .project-desc { color: var(--ink-muted); line-height: 1.75; max-width: 520px; margin-bottom: 0.75rem; }
+  .project-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pchip { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border: 1px solid var(--border); color: var(--ink-muted); }
+  .pchip.cad { background: var(--forest-pale); border-color: var(--forest); color: var(--forest); }
+  .pchip.fab { background: var(--rust-pale); border-color: var(--rust); color: var(--rust); }
+  .project-tags { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding-top: 3px; }
+  .tag { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); color: var(--ink-muted); white-space: nowrap; }
+
+  /* PHOTOGRAPHY */
+  #photography .photo-heading { font-family: var(--serif); font-size: clamp(36px, 5vw, 58px); font-weight: 300; margin-bottom: 0.5rem; }
+  #photography .photo-heading em { font-style: italic; color: var(--rust-mid); }
+  #photography .photo-sub { color: var(--ink-muted); margin-bottom: 3rem; max-width: 480px; line-height: 1.8; }
+
+  .photo-masonry { columns: 3; gap: 10px; }
+  .photo-card { break-inside: avoid; margin-bottom: 10px; position: relative; overflow: hidden; cursor: pointer; }
+  .photo-placeholder { width: 100%; display: block; aspect-ratio: var(--ratio); transition: opacity 0.3s; }
+  .photo-card:hover .photo-placeholder { opacity: 0.75; }
+  .photo-caption {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 1rem 0.75rem;
+    background: linear-gradient(transparent, rgba(18,15,10,0.82));
+    color: rgba(242,237,227,0.92); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    transform: translateY(100%); transition: transform 0.3s;
+  }
+  .photo-card:hover .photo-caption { transform: translateY(0); }
+
+  /* LIGHTBOX */
+  .lightbox-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999;
+    background: rgba(10,8,6,0.92); align-items: center; justify-content: center;
+  }
+  .lightbox-overlay.active { display: flex; }
+  .lightbox-inner {
+    position: relative; line-height: 0; border: 20px solid #fff;
+  }
+  .lightbox-inner img { display: block; max-width: 80vw; max-height: 80vh; width: auto; height: auto; }
+  .lightbox-caption {
+    position: absolute; bottom: -2rem; left: 0;
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,227,0.6);
+  }
+  .lightbox-close {
+    position: fixed; top: 2rem; right: 2rem; z-index: 1000;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(242,237,227,0.7); cursor: pointer; background: none; border: none; padding: 0;
+    transition: color 0.2s; line-height: 1.6;
+  }
+  .lightbox-close:hover { color: rgba(30,20,10,1); }
+  .photo-card { cursor: zoom-in; }
+
+  .photo-series { margin-top: 3rem; display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .series-item { background: var(--bg); padding: 1.25rem; display: flex; flex-direction: column; gap: 4px; }
+  .series-title { font-family: var(--serif); font-size: 18px; font-weight: 300; }
+  .series-meta { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--rust); }
+  .series-desc { color: var(--ink-muted); font-size: 12px; line-height: 1.6; margin-top: 4px; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 3rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .footer-name { font-family: var(--serif); font-size: 18px; font-weight: 300; color: var(--ink-muted); }
+  .footer-copy { font-size: 10px; letter-spacing: 0.1em; color: var(--ink-muted); text-transform: uppercase; }
+
+  @media (max-width: 700px) {
+    nav { padding: 0 1.5rem; }
+    section, #hero { padding: 4rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-photo-placeholder { width: 100%; height: 240px; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .project-item { grid-template-columns: 48px 1fr; }
+    .project-tags { display: none; }
+    .photo-masonry { columns: 2; }
+    .photo-series { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">J. Järvenpää</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#photography">Photography</a></li>
+    <li><a href="#about" class="cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Mechanical Engineering Student — Tampere University</p>
+      <h1 class="hero-name">Joonas<br><em>Järvenpää</em></h1>
+      <p class="hero-tagline">I build things, break things, and photograph the world in between.</p>
+      <div class="hero-badges">
+        <span class="badge rust">2nd Year BEng</span>
+        <span class="badge forest">CAD &amp; Simulation</span>
+        <span class="badge stone">Film Photography</span>
+        <span class="badge forest">Maker &amp; Builder</span>
+      </div>
+      <div class="hero-scroll">
+        <span class="scroll-line"></span>
+        <span>Scroll to explore</span>
+      </div>
+    </div>
+    <div class="hero-photo-placeholder">
+      <!-- Replace with: <img src="photos/portrait.jpg" alt="Joonas Järvenpää"> -->
+      <img src="photos/cv-kuva.jpg" alt="Joonas Järvenpää">
+    </div>
+  </div>
+</div>
+
+<div class="ruled-divider"></div>
+
+<!-- ABOUT + CONTACT -->
+<section id="about">
+  <p class="section-label">01 — About &amp; Contact</p>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-heading">A little<br><em>about me</em></h2>
+      <p class="about-text">
+        Second-year mechanical engineering student at Tampere University with a genuine obsession for how things work — from thermodynamic cycles to the mechanism of a vintage film camera shutter.
+      </p>
+      <p class="about-text">
+        I'm drawn to projects that sit at the edge of engineering and craft: CAD modelling, physical prototyping, and the occasional analogue photography project. I care about making things that are rigorous and beautiful.
+      </p>
+      <p class="about-text">
+        Currently looking for summer internships and collaborative side projects. Open to anything that involves making something real.
+      </p>
+      <div class="contact-strip">
+        <a href="mailto:joonas.jarvenpaa04@gmail.com" class="contact-chip">✉ joonas.jarvenpaa04@gmail.com</a>
+        <a href="#" class="contact-chip">↗ LinkedIn</a>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="education-block">
+        <div class="edu-degree">Mechanical Engineering, B.Sc & M.Sc</div>
+        <div class="edu-meta">Tampere University · 2024 – present · Year 2 of 5</div>
+      </div>
+      <div style="height: 1.5rem;"></div>
+      <div class="skill-row" style="border-top: 1px solid var(--border);">
+        <span class="skill-name">SolidWorks / CAD</span>
+        <span class="skill-tag tool">Tool</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">FEA &amp; Simulation</span>
+        <span class="skill-tag eng">Engineering</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Machining &amp; Fab</span>
+        <span class="skill-tag eng">Engineering</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Python / MATLAB</span>
+        <span class="skill-tag tool">Tool</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Film Photography</span>
+        <span class="skill-tag creative">Creative</span>
+      </div>
+      <div class="skill-row">
+        <span class="skill-name">Prototyping / 3D Print</span>
+        <span class="skill-tag eng">Engineering</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ruled-divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <p class="section-label">02 — Projects</p>
+  <div class="projects-header">
+    <h2 class="projects-heading">Selected<br><em>work</em></h2>
+    <span class="project-count">4 projects</span>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-item">
+      <span class="project-num">001</span>
+      <div>
+        <div class="project-title">Lightweight Bracket Redesign</div>
+        <p class="project-desc">Academic project — redesigned a structural bracket for minimum weight under a fixed load case using topology optimisation in SolidWorks. Achieved a 34% mass reduction while maintaining factor of safety.</p>
+        <div class="project-chips">
+          <span class="pchip cad">SolidWorks</span>
+          <span class="pchip cad">FEA</span>
+          <span class="pchip">Coursework</span>
+        </div>
+      </div>
+      <div class="project-tags"><span class="tag">2024</span></div>
+    </div>
+
+    <div class="project-item">
+      <span class="project-num">002</span>
+      <div>
+        <div class="project-title">Hand-built Longboard</div>
+        <p class="project-desc">Personal build — designed and fabricated a laminated maple longboard deck from scratch. Involved jig design, vacuum pressing, and custom truck geometry calculations. Ridden daily.</p>
+        <div class="project-chips">
+          <span class="pchip fab">Fabrication</span>
+          <span class="pchip">Personal</span>
+        </div>
+      </div>
+      <div class="project-tags"><span class="tag">2024</span></div>
+    </div>
+
+    <div class="project-item">
+      <span class="project-num">003</span>
+      <div>
+        <div class="project-title">Thermal Analysis — Heat Exchanger</div>
+        <p class="project-desc">Coursework simulation modelling a counter-flow heat exchanger in MATLAB. Compared analytical and numerical results, documented deviations, and proposed geometry modifications to improve effectiveness.</p>
+        <div class="project-chips">
+          <span class="pchip cad">MATLAB</span>
+          <span class="pchip">Thermodynamics</span>
+          <span class="pchip">Coursework</span>
+        </div>
+      </div>
+      <div class="project-tags"><span class="tag">2023</span></div>
+    </div>
+
+    <div class="project-item">
+      <span class="project-num">004</span>
+      <div>
+        <div class="project-title">DIY Film Camera Repair</div>
+        <p class="project-desc">Stripped, serviced, and recalibrated a 1970s Olympus OM-1 — shutter speeds, light seals, mirror damper. Half engineering puzzle, half obsession. Documents the process with annotated photography.</p>
+        <div class="project-chips">
+          <span class="pchip fab">Precision Mech.</span>
+          <span class="pchip creative">Photography</span>
+          <span class="pchip">Personal</span>
+        </div>
+      </div>
+      <div class="project-tags"><span class="tag">2023</span></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="ruled-divider"></div>
+
+<!-- PHOTOGRAPHY / CREATIVE WORK -->
+<section id="photography">
+  <p class="section-label">03 — Creative Work &amp; Photography</p>
+  <h2 class="photo-heading">Through the<br><em>lens</em></h2>
+  <p class="photo-sub">35mm film photography — Helsinki streets, Nordic landscapes, quiet details. The same eye for precision I bring to engineering, pointed at the world.</p>
+
+  <div class="photo-masonry">
+    <div class="photo-card" data-caption="Lasipalatsi">
+      <img src="photos/Lasipalatsi.jpg" alt="Lasipalatsi" style="width:100%; display:block;">
+      <div class="photo-caption">Lasipalatsi</div>
+    </div>
+    <div class="photo-card" data-caption="Silta">
+      <img src="photos/Silta.jpg" alt="Silta" style="width:100%; display:block;">
+      <div class="photo-caption">Silta 2026</div>
+    </div>
+    <div class="photo-card" data-caption="Sorsat">
+      <img src="photos/Sorsat.jpg" alt="Sorsat" style="width:100%; display:block;">
+      <div class="photo-caption">Sorsat</div>
+    </div>
+    <div class="photo-card" data-caption="Lumiukko">
+      <img src="photos/Lumiukko.jpg" alt="Lumiukko" style="width:100%; display:block;">
+      <div class="photo-caption">Lumiukko</div>
+    </div>
+    <div class="photo-card" data-caption="Satama">
+      <img src="photos/Satama.jpg" alt="Satama" style="width:100%; display:block;">
+      <div class="photo-caption">Satama</div>
+    </div>
+    <div class="photo-card" data-caption="Yyteri">
+      <img src="photos/Yyteri.jpg" alt="Yyteri" style="width:100%; display:block;">
+      <div class="photo-caption">Yyteri</div>
+    </div>
+    <div class="photo-card" data-caption="Pori">
+      <img src="photos/Pori.jpg" alt="Pori" style="width:100%; display:block;">
+      <div class="photo-caption">Pori</div>
+    </div>
+    <div class="photo-card" data-caption="Koiranulkoiluttaja">
+      <img src="photos/Koiranulkoiluttaja.jpg" alt="Koiranulkoiluttaja" style="width:100%; display:block;">
+      <div class="photo-caption">Koiranulkoiluttaja</div>
+    </div>
+    
+  </div>
+
+  <div class="photo-series">
+    <div class="series-item">
+      <span class="series-meta">Series 01 · 2024</span>
+      <span class="series-title">Nordic Light</span>
+      <p class="series-desc">Forty frames on 35mm during the long light of Finnish autumn. Grain, birch, cold air.</p>
+    </div>
+    <div class="series-item">
+      <span class="series-meta">Series 02 · 2023</span>
+      <span class="series-title">Workshop Series</span>
+      <p class="series-desc">Documenting the university machine shop — tools, process, hands at work. Industrial and intimate.</p>
+    </div>
+    <div class="series-item">
+      <span class="series-meta">Series 03 · Ongoing</span>
+      <span class="series-title">Quiet Helsinki</span>
+      <p class="series-desc">Early mornings, empty trams, light on concrete. The city before it wakes up.</p>
+    </div>
+  </div>
+</section>
+
+<div class="ruled-divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-name">Joonas Järvenpää</span>
+  <span class="footer-copy">Open to internships · Helsinki, FI · 2025</span>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" role="dialog" aria-modal="true">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">✕ close</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
+<script>
+  const overlay = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbCaption = document.getElementById('lightbox-caption');
+  const lbClose = document.getElementById('lightbox-close');
+
+  document.querySelectorAll('.photo-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var img = card.querySelector('img');
+      if (!img) return;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCaption.textContent = card.dataset.caption || '';
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeLightbox() {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  lbClose.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>
